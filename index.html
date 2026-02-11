@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Evaporated Milk Tracker</title>
+
+  <style>
+    /* =========================
+       Hussaini Islamic Theme
+       ========================= */
+    :root{
+      --cream:#f6f5e8;        /* page background */
+      --green-dark:#1f4d2b;  /* primary HIM green */
+      --green:#2e6b3f;
+      --green-soft:#3f7d54;
+      --olive:#5e7f64;
+      --white:#ffffff;
+      --ink:#102a1c;
+      --muted:#5f6f66;
+      --card:#ffffff;
+      --accent:#c0392b;      /* subtle red for progress */
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background: var(--cream);
+      color:var(--ink);
+    }
+
+    /* ===== Header (matches HIM site) ===== */
+    .hero{
+      background: var(--cream);
+      padding: 22px 16px 18px;
+      border-bottom: 4px solid var(--green-dark);
+    }
+
+    .hero-inner{
+      max-width: 980px;
+      margin: 0 auto;
+      display:flex;
+      align-items:center;
+      gap:16px;
+    }
+
+    .logo{
+      width:52px;
+      height:52px;
+      border-radius:12px;
+      background: var(--green-dark);
+      color:#fff;
+      display:grid;
+      place-items:center;
+      font-weight:900;
+      font-size:18px;
+    }
+
+    .kicker{
+      font-size:12px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:var(--olive);
+      margin-bottom:4px;
+    }
+
+    h1{
+      margin:0;
+      font-size: clamp(20px,4.5vw,30px);
+      font-weight:900;
+      color:var(--green-dark);
+    }
+
+    .sub{
+      margin-top:6px;
+      font-size:14px;
+      color:var(--muted);
+    }
+
+    main{
+      max-width: 980px;
+      margin: 24px auto 40px;
+      padding: 0 16px;
+    }
+
+    /* ===== Card ===== */
+    .card{
+      background: var(--card);
+      border-radius: 18px;
+      padding: 18px;
+      border: 2px solid var(--green-dark);
+    }
+
+    .top-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:14px;
+    }
+
+    .count{
+      font-size: clamp(36px,6vw,56px);
+      font-weight:950;
+      color:var(--green-dark);
+    }
+
+    .target{
+      font-size:16px;
+      font-weight:700;
+      color:var(--muted);
+    }
+
+    .pill{
+      background: var(--green);
+      color:#fff;
+      padding:8px 14px;
+      border-radius:999px;
+      font-weight:800;
+      font-size:14px;
+    }
+
+    /* ===== Progress bar ===== */
+    .bar{
+      height:18px;
+      background:#e3e8e3;
+      border-radius:999px;
+      overflow:hidden;
+    }
+
+    .fill{
+      height:100%;
+      width:0%;
+      background: linear-gradient(
+        90deg,
+        var(--green-dark),
+        var(--green),
+        var(--accent)
+      );
+      transition:width .25s ease;
+    }
+
+    .bar-labels{
+      display:flex;
+      justify-content:space-between;
+      margin-top:10px;
+      font-size:13px;
+      font-weight:700;
+      color:var(--muted);
+    }
+
+    /* ===== Controls ===== */
+    .controls{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:18px;
+      align-items:center;
+    }
+
+    .btns{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    button{
+      border:none;
+      border-radius:12px;
+      padding:10px 14px;
+      font-weight:900;
+      cursor:pointer;
+      font-size:15px;
+    }
+
+    .add{
+      background: var(--green-dark);
+      color:#fff;
+    }
+
+    .subbtn{
+      background: var(--green-soft);
+      color:#fff;
+    }
+
+    .danger{
+      background:#eee;
+      color:#7a1f1f;
+      border:1px solid #cfa3a3;
+    }
+
+    .footer-note{
+      margin-top:14px;
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.4;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="logo">HM</div>
+      <div>
+        <div class="kicker">Hussaini Islamic Mission</div>
+        <h1>Evaporated Milk Tracker</h1>
+        <div class="sub">Live count for tea arrangements</div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="card">
+      <div class="top-row">
+        <div>
+          <div class="count" id="countText">156</div>
+          <div class="target">/ <span id="targetText">400</span> tins</div>
+        </div>
+        <div class="pill"><span id="pctText">39%</span> complete</div>
+      </div>
+
+      <div class="bar">
+        <div class="fill" id="fill"></div>
+      </div>
+
+      <div class="bar-labels">
+        <span id="remainingText">244 remaining</span>
+        <span id="updatedText">Updated just now</span>
+      </div>
+
+      <div class="controls">
+        <div class="btns">
+          <button class="add" data-delta="5">+5</button>
+          <button class="add" data-delta="10">+10</button>
+          <button class="subbtn" data-delta="-5">-5</button>
+          <button class="danger" id="reset">Reset</button>
+        </div>
+      </div>
+
+      <div class="footer-note">
+        May Allah reward everyone who contributes towards serving the rozadars.
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const DEFAULT = 156;
+    const TARGET = 400;
+    let count = DEFAULT;
+
+    const countText = document.getElementById("countText");
+    const targetText = document.getElementById("targetText");
+    const pctText = document.getElementById("pctText");
+    const remainingText = document.getElementById("remainingText");
+    const fill = document.getElementById("fill");
+
+    targetText.textContent = TARGET;
+
+    document.querySelectorAll("[data-delta]").forEach(btn=>{
+      btn.onclick = ()=>update(count + Number(btn.dataset.delta));
+    });
+
+    document.getElementById("reset").onclick = ()=>update(DEFAULT);
+
+    function update(val){
+      count = Math.max(0, Math.min(TARGET, val));
+      const pct = Math.round((count/TARGET)*100);
+      countText.textContent = count;
+      pctText.textContent = pct + "%";
+      remainingText.textContent = (TARGET-count)+" remaining";
+      fill.style.width = pct + "%";
+    }
+
+    update(DEFAULT);
+  </script>
+</body>
+</html>
